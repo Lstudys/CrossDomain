@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>example</title>
+</head>
+
+<body>
+    <div id="wrap"></div>
+    <script type="text/babel">
+        class App extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    arrayData:[{number:1,name:'lyh',age:20,sex:'男'}]
+                }
+            }
+            componentDidMount(){
+                const initData = async function(){
+                    const {data} = await axios.get('http://localhost:8080/initData');
+                    return data;
+                }
+                initData().then((data)=>{
+                    this.setState({arrayData:data});
+                    // console.log(data);
+                });
+            }
+
+            getData = async ()=>{
+                const {arrayData} = this.state;
+                const {number} = arrayData[arrayData.length - 1];
+                const {data} = await axios.get(`http://localhost:8080/addData/${number}`);
+                console.log(data.name + '晚上');
+                return data;
+            }
+
+            addData = ()=>{
+                this.getData().then((data)=>{
+                    const {arrayData} = this.state;
+                    arrayData.push(data);
+                    this.setState({arrayData:arrayData});
+                });
+            }
+            
+            render(){
+                return(
+                   <div className="wrap">
+                    <table className="gridtable">
+                        <tbody>
+                          <tr>
+                            <th>序号</th><th>姓名</th><th>年龄</th><th>性别</th>
+                          </tr>
+                    {
+                        this.state.arrayData.map(function(item){
+                                return (<tr>
+                                    <td>{item.number}</td><td>{item.name}</td><td>{item.age}</td><td>{item.sex}</td>
+                                </tr>
+                                );
+                         })
+                    }
+                </tbody>
+                </table> 
+                <button onClick={()=>{this.addData()}}>添加</button>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(<App/>,document.getElementById('wrap'));
+    </script>
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+</body>
+
+</html>
