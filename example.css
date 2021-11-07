@@ -1,0 +1,29 @@
+.wrap{
+    height: 500px;
+    width: 500px;
+    /* background-color: chocolate; */
+    text-align: center;
+    margin: 0 auto;
+}
+
+.inner{
+    height: 50%;
+    width: 50%;
+    background-color: pink;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+    height: 80px;
+    cursor: pointer;
+    color: #fff;
+    background-color: darkcyan;
+}
